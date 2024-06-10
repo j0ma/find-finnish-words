@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from collections import namedtuple
 from pathlib import Path
 
@@ -37,6 +39,52 @@ def safely_grab_db(db):
         )
 
     return db
+
+
+def fetch_sentence(db, document_id, sentence_id, debug=False):
+    with duckdb.connect(database=db, read_only=False) as conn:
+
+        if debug:
+            logger.debug(f"Fetcing sentence {sentence_id} from document {document_id}")
+
+        result = conn.execute(
+            f"""
+        SELECT token
+        FROM tokens
+        WHERE document_id = {document_id}
+        AND sentence_id = {sentence_id}
+        """
+        ).fetchall()
+
+        sentence = " ".join([tok[0] for tok in result]).strip()
+        return sentence
+
+
+def fetch_sentence_plus_metadata(db, document_id, sentence_id, debug=False):
+    with duckdb.connect(database=db, read_only=False) as conn:
+
+        if debug:
+            logger.debug(f"Fetcing sentence {sentence_id} from document {document_id}")
+
+        result = conn.sql(
+            f"""
+        SELECT *
+        FROM tokens
+        WHERE document_id = {document_id}
+        AND sentence_id = {sentence_id}
+        """
+        ).df()
+
+        return result
+
+
+def output_based_on_format(result, output_format):
+    output_fn = {
+        "jsonl": output_as_jsonl,
+        "tsv": output_as_tsv,
+    }.get(output_format, click.echo)
+
+    output_fn(result)
 
 
 @click.group()
@@ -83,7 +131,7 @@ def ingest(db, debug, input_directory):
                 logger.debug(f"Processing file: {file.name}")
 
             for sent_idx, sent in enumerate(doc.sents):
-                for token in sent:
+                for token_idx, token in enumerate(sent):
                     token = token
                     lemma = token.lemma_
                     suffix = token.suffix_
@@ -119,7 +167,7 @@ def ingest(db, debug, input_directory):
     """.format(
                             document_idx=document_idx,
                             sent_idx=sent_idx,
-                            token_idx=token.i,
+                            token_idx=token_idx,
                             token=str(token),
                             lemma=lemma,
                             suffix=suffix,
@@ -131,23 +179,18 @@ def ingest(db, debug, input_directory):
                     )
 
 
-def output_based_on_format(result, output_format):
-    output_fn = {
-        "jsonl": output_as_jsonl,
-        "tsv": output_as_tsv,
-    }.get(output_format, click.echo)
-
-    output_fn(result)
-
-
 @cli.command("query", help="Query an existing collection for a given token.")
 @click.option("--db", type=click.Path(exists=True), required=False)
 @click.option(
     "--output-format", "-f", type=click.Choice(["jsonl", "tsv"]), default="tsv"
 )
 @click.option("--debug/--no-debug", default=False)
+@click.option("--output-full-sent", is_flag=True, default=False)
+@click.option("--output-with-token-level-metadata", is_flag=True, default=False)
 @click.argument("query", required=True)
-def query(db, output_format, debug, query):
+def query(
+    db, output_format, debug, output_full_sent, output_with_token_level_metadata, query
+):
     """Query an existing collection saved to a.duckdb file."""
 
     db = safely_grab_db(db)
@@ -165,26 +208,36 @@ def query(db, output_format, debug, query):
         """
         ).df()
 
+        doc_sent_ids = [
+            (docid, sentid)
+            for docid, sentid in zip(result["document_id"], result["sentence_id"])
+        ]
+
+        sentence_dicts = [{} for _ in doc_sent_ids]
+
+        for ix, (docid, sentid) in enumerate(doc_sent_ids):
+            if output_full_sent:
+                sent = fetch_sentence(db, docid, sentid, debug)
+                sentence_dicts[ix]["sentence"] = sent
+
+            if output_with_token_level_metadata:
+
+                assert (
+                    output_format == "jsonl"
+                ), "Only JSONL output is supported for token-level metadata"
+
+                token_meta = fetch_sentence_plus_metadata(
+                    db, docid, sentid, debug
+                ).drop(["document_id", "sentence_id"], axis=1)
+
+                sentence_dicts[ix]["token_metadata"] = token_meta.to_dict(
+                    orient="records"
+                )
+
+        if output_full_sent or output_with_token_level_metadata:
+            result = result.assign(sentence_metadata=sentence_dicts)
+
         output_based_on_format(result, output_format)
-
-
-def fetch_sentence(db, document_id, sentence_id, debug=False):
-    with duckdb.connect(database=db, read_only=False) as conn:
-
-        if debug:
-            logger.debug(f"Fetcing sentence {sentence_id} from document {document_id}")
-
-        result = conn.execute(
-            f"""
-        SELECT token
-        FROM tokens
-        WHERE document_id = {document_id}
-        AND sentence_id = {sentence_id}
-        """
-        ).fetchall()
-
-        sentence = " ".join([tok[0] for tok in result]).strip()
-        return sentence
 
 
 @cli.command("fetch-sent-str", help="Fetch a sentence from a document.")
@@ -195,31 +248,13 @@ def fetch_sentence(db, document_id, sentence_id, debug=False):
 @click.option("--debug/--no-debug", default=False)
 @click.argument("document_id", required=True)
 @click.argument("sentence_id", required=True)
-def fetch_sent_str(db, output_format, debug, document_id, sentence_id):
+def fetch_sent_str_id(db, output_format, debug, document_id, sentence_id):
     """Query an existing collection saved to a.duckdb file."""
 
     db = safely_grab_db(db)
 
     sentence = fetch_sentence(db, document_id, sentence_id, debug)
     click.echo(sentence)
-
-
-def fetch_sentence_plus_metadata(db, document_id, sentence_id, debug=False):
-    with duckdb.connect(database=db, read_only=False) as conn:
-
-        if debug:
-            logger.debug(f"Fetcing sentence {sentence_id} from document {document_id}")
-
-        result = conn.sql(
-            f"""
-        SELECT *
-        FROM tokens
-        WHERE document_id = {document_id}
-        AND sentence_id = {sentence_id}
-        """
-        ).df()
-
-        return result
 
 
 @cli.command("fetch-sent-all", help="Fetch sentence with per-token metadata")
@@ -236,6 +271,23 @@ def fetch_sent_all(db, output_format, debug, document_id, sentence_id):
     db = safely_grab_db(db)
 
     result = fetch_sentence_plus_metadata(db, document_id, sentence_id, debug)
+    output_based_on_format(result, output_format)
+
+
+@cli.command("find-unique-words", help="Fetch sentence with per-token metadata")
+@click.option("--db", type=click.Path(exists=True), required=False)
+@click.option(
+    "--output-format", "-f", type=click.Choice(["jsonl", "tsv"]), default="tsv"
+)
+@click.option("--debug/--no-debug", default=False)
+def fetch_sent_all(db, output_format, debug):
+    """Query an existing collection saved to a.duckdb file."""
+
+    db = safely_grab_db(db)
+
+    with duckdb.connect(database=db, read_only=False) as conn:
+        result = conn.sql("SELECT DISTINCT token FROM tokens").df()
+
     output_based_on_format(result, output_format)
 
 
