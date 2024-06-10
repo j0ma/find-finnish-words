@@ -137,7 +137,7 @@ def fetch(db, debug, document_id, sentence_id):
 
         result = conn.execute(
             f"""
-        SELECT token
+        SELECT *
         FROM tokens
         WHERE document_id = {document_id}
         AND sentence_id = {sentence_id}
