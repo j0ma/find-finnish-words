@@ -12,6 +12,22 @@ TokenMatch = namedtuple(
     "TokenMatch", ["document_id", "sentence_id", "token_id", "token"]
 )
 
+DEFAULT_DB_NAME = "data/corpus.duckdb"
+
+
+def safely_grab_db(db):
+    if not db:
+        import os
+
+        db = (
+            os.environ["DUCKDB_DATABASE"]
+
+            if "DUCKDB_DATABASE" in os.environ
+            else DEFAULT_DB_NAME
+        )
+
+    return db
+
 
 @click.group()
 def cli():
@@ -19,10 +35,13 @@ def cli():
 
 
 @cli.command("ingest")
-@click.option("--db", type=click.Path(), default="corpus.duckdb")
+@click.option("--db", type=click.Path(), required=False)
 @click.option("--debug/--no-debug", default=False)
 @click.argument("input_directory")
 def ingest(db, debug, input_directory):
+
+    db = safely_grab_db(db)
+
     """Ingest a directory of text files."""
     conn = duckdb.connect(database=db, read_only=False)
     conn.execute(
@@ -100,11 +119,14 @@ VALUES (
 
 
 @cli.command("query")
-@click.option("--db", type=click.Path(exists=True), default="corpus.duckdb")
+@click.option("--db", type=click.Path(exists=True), required=False)
 @click.option("--debug/--no-debug", default=False)
 @click.argument("query", required=True)
 def query(db, debug, query):
     """Query an existing collection saved to a.duckdb file."""
+
+    db = safely_grab_db(db)
+
     with duckdb.connect(database=db, read_only=False) as conn:
 
         if debug:
@@ -123,13 +145,16 @@ def query(db, debug, query):
             click.echo(matched_token)
 
 
-@cli.command("fetch")
-@click.option("--db", type=click.Path(exists=True), default="corpus.duckdb")
+@cli.command("fetch-sentence")
+@click.option("--db", type=click.Path(exists=True), required=False)
 @click.option("--debug/--no-debug", default=False)
 @click.argument("document_id", required=True)
 @click.argument("sentence_id", required=True)
 def fetch(db, debug, document_id, sentence_id):
     """Query an existing collection saved to a.duckdb file."""
+
+    db = safely_grab_db(db)
+
     with duckdb.connect(database=db, read_only=False) as conn:
 
         if debug:
@@ -137,15 +162,43 @@ def fetch(db, debug, document_id, sentence_id):
 
         result = conn.execute(
             f"""
-        SELECT *
+        SELECT token
         FROM tokens
         WHERE document_id = {document_id}
         AND sentence_id = {sentence_id}
         """
         ).fetchall()
 
-        for row in result:
-            click.echo(row)
+        tokens = " ".join([tok[0] for tok in result]).strip()
+        click.echo(tokens)
+
+
+@cli.command("fetch-all")
+@click.option("--db", type=click.Path(exists=True), required=False)
+@click.option("--debug/--no-debug", default=False)
+@click.argument("document_id", required=True)
+@click.argument("sentence_id", required=True)
+def fetch(db, debug, document_id, sentence_id):
+    """Query an existing collection saved to a.duckdb file."""
+
+    db = safely_grab_db(db)
+    stdout = click.get_text_stream("stdout")
+
+    with duckdb.connect(database=db, read_only=False) as conn:
+
+        if debug:
+            logger.debug(f"Fetcing sentence {sentence_id} from document {document_id}")
+
+        result = conn.sql(
+            f"""
+        SELECT *
+        FROM tokens
+        WHERE document_id = {document_id}
+        AND sentence_id = {sentence_id}
+        """
+        ).df()
+
+        result.to_json(stdout, orient="records", lines=True)
 
 
 if __name__ == "__main__":
