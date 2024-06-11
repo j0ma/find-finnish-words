@@ -8,37 +8,13 @@ import duckdb
 import spacy
 from loguru import logger
 
+import util as u
+
 nlp = spacy.load("fi_core_news_lg")
 
 TokenMatch = namedtuple(
     "TokenMatch", ["document_id", "sentence_id", "token_id", "token"]
 )
-
-DEFAULT_DB_NAME = "data/corpus.duckdb"
-
-
-def output_as_jsonl(result):
-    stdout = click.get_text_stream("stdout")
-    result.to_json(stdout, orient="records", lines=True)
-
-
-def output_as_tsv(result):
-    stdout = click.get_text_stream("stdout")
-    result.to_csv(stdout, sep="\t", index=False)
-
-
-def safely_grab_db(db):
-    if not db:
-        import os
-
-        db = (
-            os.environ["DUCKDB_DATABASE"]
-
-            if "DUCKDB_DATABASE" in os.environ
-            else DEFAULT_DB_NAME
-        )
-
-    return db
 
 
 def fetch_sentence(db, document_id, sentence_id, debug=False):
@@ -78,15 +54,6 @@ def fetch_sentence_plus_metadata(db, document_id, sentence_id, debug=False):
         return result
 
 
-def output_based_on_format(result, output_format):
-    output_fn = {
-        "jsonl": output_as_jsonl,
-        "tsv": output_as_tsv,
-    }.get(output_format, click.echo)
-
-    output_fn(result)
-
-
 @click.group()
 def cli():
     pass
@@ -98,7 +65,7 @@ def cli():
 @click.argument("input_directory")
 def ingest(db, debug, input_directory):
 
-    db = safely_grab_db(db)
+    db = u.safely_grab_db(db)
 
     """Ingest a directory of text files."""
     with duckdb.connect(database=db, read_only=False) as conn:
@@ -193,7 +160,7 @@ def query(
 ):
     """Query an existing collection saved to a.duckdb file."""
 
-    db = safely_grab_db(db)
+    db = u.safely_grab_db(db)
 
     with duckdb.connect(database=db, read_only=False) as conn:
 
@@ -237,7 +204,7 @@ def query(
         if output_full_sent or output_with_token_level_metadata:
             result = result.assign(sentence_metadata=sentence_dicts)
 
-        output_based_on_format(result, output_format)
+        u.output_based_on_format(result, output_format)
 
 
 @cli.command("fetch-sent-str", help="Fetch a sentence from a document.")
@@ -251,7 +218,7 @@ def query(
 def fetch_sent_str_id(db, output_format, debug, document_id, sentence_id):
     """Query an existing collection saved to a.duckdb file."""
 
-    db = safely_grab_db(db)
+    db = u.safely_grab_db(db)
 
     sentence = fetch_sentence(db, document_id, sentence_id, debug)
     click.echo(sentence)
@@ -268,10 +235,10 @@ def fetch_sent_str_id(db, output_format, debug, document_id, sentence_id):
 def fetch_sent_all(db, output_format, debug, document_id, sentence_id):
     """Query an existing collection saved to a.duckdb file."""
 
-    db = safely_grab_db(db)
+    db = u.safely_grab_db(db)
 
     result = fetch_sentence_plus_metadata(db, document_id, sentence_id, debug)
-    output_based_on_format(result, output_format)
+    u.output_based_on_format(result, output_format)
 
 
 @cli.command("find-unique-words", help="Fetch sentence with per-token metadata")
@@ -283,12 +250,12 @@ def fetch_sent_all(db, output_format, debug, document_id, sentence_id):
 def fetch_sent_all(db, output_format, debug):
     """Query an existing collection saved to a.duckdb file."""
 
-    db = safely_grab_db(db)
+    db = u.safely_grab_db(db)
 
     with duckdb.connect(database=db, read_only=False) as conn:
         result = conn.sql("SELECT DISTINCT token FROM tokens").df()
 
-    output_based_on_format(result, output_format)
+    u.output_based_on_format(result, output_format)
 
 
 if __name__ == "__main__":
