@@ -13,12 +13,12 @@ DEFAULT_DB_NAME = "data/corpus.duckdb"
 
 def output_as_jsonl(result):
     stdout = click.get_text_stream("stdout")
-    result.to_json(stdout, orient="records", lines=True)
+    result.to_json(stdout, orient="records", lines=True, force_ascii=False)
 
 
 def output_as_tsv(result):
     stdout = click.get_text_stream("stdout")
-    result.to_csv(stdout, sep="\t", index=False)
+    result.to_csv(stdout, sep="\t", index=False, encoding="utf-8")
 
 
 def output_based_on_format(result, output_format):
