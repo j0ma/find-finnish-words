@@ -163,3 +163,5 @@ cython_debug/
 
 raw_data/
 unimorph/
+
+**/obsolete/
