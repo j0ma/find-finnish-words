@@ -11,7 +11,7 @@ def main(n, tsv_file):
     )
     df["num_segm"] = df["segments"].str.split("|").apply(len)
     filtered = df[df["num_segm"] == n]
-    
+
     stdout = click.get_text_stream("stdout")
     filtered.to_csv(stdout, sep="\t", header=False, index=False)
 

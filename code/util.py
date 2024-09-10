@@ -36,7 +36,6 @@ def safely_grab_db(db):
 
         db = (
             os.environ["DUCKDB_DATABASE"]
-
             if "DUCKDB_DATABASE" in os.environ
             else DEFAULT_DB_NAME
         )
