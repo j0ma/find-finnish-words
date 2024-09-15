@@ -1,0 +1,10 @@
+Mitä teen nyt?
+Haasteenani on kuvata kielten äännevaihteluita mahdollisimman yksinkertaisella, helposti hahmotettavalla, mutta yleispätevällä menetelmällä.
+Äännevaihteluita esiintyy sanojen taivutuksessa monissa kielissä, suomessa esimerkiksi rata ~ radoilla ilmentää astevaihtelua t~d sekä vokaalivaihtelua a~o.
+Vastaavasti esim.
+suomen sana miekka vastaa viron sanaa mõõk, tai yleiskielen sana kolme vastaa itämurteiden muotoa kolome.
+Tällaisille kielitieteen tuntemille äänteiden vastaavuuksien laadulle ja niiden ehdoille tunnetaan sääntöjä, mutta sääntöjen tarkan muodon löytämien ja niiden toteuttaminen tietokoneella ei ole helppoa.
+Pyrin löytämään perinteistä tapaa objektiivisemman ja helpomman tavan tunnistaa ja muotoilla havaittuja säännönmukaisuuksia.
+Se on mahdollista, koska kaksitasosäännöt ovat riippumattomia toisistaan ja ne voidaan löytää kukin erikseen.
+Tämä on ihmiselle yksinkertaista ja tavoitteenani on lingvistisesti kelvollisten sääntöjen automaattinen päättely kielitieteilijän valitseman esimerkkiaineiston pohjalta.
+Toteutan sääntöjä FIN-CLARIN-hankkeessa kehitetyillä HFST-nimisellä äärellistilaisten automaattien tekniikalla, jolloin säännöstöjä voidaan käyttää helposti kumpaankin suuntaan sekä yhdistää toisiin säännöstöihin.

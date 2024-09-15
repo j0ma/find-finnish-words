@@ -1,0 +1,23 @@
+Hallintoa, rahoitusta ja kv-toimintaa
+Siirryttyäni humanistien puolelle ja saatuani siellä oppituolin minut valittiin kai aiemman tietojenkäsittelytaustani perusteella ensin yliopiston laskentakeskuksen johtokuntaan ja sittemmin yliopiston tietohallintoryhmään puheenjohtajaksi (1996–1998) ja jäseneksi (1998–2000).
+Osakseni tuli ehdottaa yliopistolle tietohallintostrategiaa ja tietotekniikan palveluiden uudelleen organisointia.
+Yliopisto ottikin ehdotuksen mukaisesti suunnan tietoverkkojen kehittämiseen.
+Vaiheeseen liittyi mielenkiintoisia keskusteluja yliopiston ylimmän johdon kanssa.
+Mieleenpainuvin oli kuitenkin tilaisuus, jossa perustelin tietotekniikan väen satapäiselle kokoukselle organisaation muutosta, jota he kovasti vierastivat.
+Valtakunnallinen Kieliteknologian opetuksen verkosto (KIT-verkosto) toimi vuosina 2001–2007 osin opetusministeriön erityisrahoituksella ja sen jälkeen yliopistojen muun yhteistyön puitteissa.
+Mukana olivat kaikki yliopistot, jotka tarjosivat aihepiiriin liittyvää koulutusta.
+Rahoituksen alku oli mielenkiintoinen, koska elettiin aikoja, jolloin yleiset määrärahojen leikkaukset olivat ajankohtaisia.
+Järjestin ensin palaverin, johon kutsuin eri yliopistoista ja oppiaineista kollegoja, joiden tiesin toimivan näillä aloilla.
+Teimme yhteisen muistion asian tärkeydestä.
+Marssin tämän paperin kanssa rehtorimme Kari Raivion luo, joka suhtautui myönteisesti myöntäen siemenrahaa.
+Tämän tiedon kanssa etenin opetusministeriöön, joka perustikin nopeasti työryhmän.
+Puolessa vuodessa valmistui muistio Kieliteknologian koulutuksen laajentaminen (1999) ja KIT-verkosto käynnistyi vuoden 2001 alusta.
+Kieliteknologian valtakunnallisen perusopetuksen käynnistyttyä oli luontevaa perustaa tohtorikoulutusta varten Kieliteknologian valtakunnallinen tutkijakoulu (KIT-tutkijakoulu), joka toimi kaksi nelivuotiskautta vuosina 2002–2005 ja 2006–2009 itsenäisenä ja sen jälkeen valtakunnallisen Langnet-tutkijakoulun kieliteknologian ohjelmana.
+KIT-tutkijakoulun kanssa perustettiin samanaikaisesti yhdessä Göteborgin yliopiston kanssa Pohjoismaat ja Baltian käsittävä Nordic Graduate School of Language Technology, jonka puitteissa järjestettiin ja rahoitettiin kansainväliset tutkijakurssit.
+Perustin Northern European Association for Language Technology (NEALT) -järjestön vuonna 2006.
+NEALT huolehtii vuodesta 1977 pidettyjen pohjoismaisten kieliteknologiapäivien (Nordiska Datalingvistikdagarna, NODALIDA) säännöllisestä järjestämisestä.
+Niitä pidettiin aiemmin ad hoc -periaatteella, mutta nyt NEALT varmistaa konferenssien laadun ja jatkuvuuden.
+Toimin vuoden 2009 loppuun NEALTin puheenjohtajana.
+Erinäisten yksittäisiä kieliaineistoja koskevien EU-hankkeiden jälkeen tuli vuoden 2006 aikana ajankohtaiseksi CLARIN (Common Language Resources and Technologies Infrastructure) -niminen laaja eurooppalainen kieli-infrastruktuurihanke.
+Ryhdyin omalta osaltani ajamaan Suomen osallistumista CLARINiin ja koko CLARINin toteutumista.
+Suomen Akatemian ja opetusministeriön sekä Helsingin yliopiston myötävaikutuksella saatiin ripeästi käyntiin sen edellyttämä kansallinen infrastruktuuri, FIN-CLARIN, johon kuuluvat kaikki alalla toimivat yliopistot, Kotimaisten kielten keskus sekä Tieteen tietotekniikan keskus (CSC).

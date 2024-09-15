@@ -1,0 +1,14 @@
+Väitös ja morfologinen kaksitasomalli
+Opiskeltuani sekä tietojenkäsittelyoppia että yleistä kielitiedettä etsin ratkaisuja yhdistämällä näiden tietoja.
+Menin tutkijaksi Fred Karlssonin vetämään Suomen Akatemian hankkeeseen (1981–1984), jossa selviteltiin suomen kielen automaattista tunnistamista.
+Jo ensi kuukausina vieraaksi tuli Lauri Karttunen, joka toimi professorina Teksasin Austinissa.
+Kun hän kuuli, mitä suunnilleen olin ajatellut työni kohteeksi, pyysi hän minut myöhemmin keväällä Austinissa järjestettävään seminaariin, johon saapuivat erityisesti Ron Kaplan ja Martin Kay, jotka olivat työstäneet samantapaisia ajatuksia.
+Sain rahoituksen ja lähdin matkaan.
+Sain tuoreeltaan kuvan heidän työstään ja oivalluksistaan.
+Menetelmä sopi hyvin englantiin, mutta suomen suhteen syntyi vaikeuksia, äännevaihteluiden paljouden johdosta.
+Työstin heidän ajatustensa ohella omiani joulukuuhun saakka, jolloin palaset putosivat paikalleen.
+Kaplanin ja Kayn peräkkäisen mallin sijasta sain toimimaan menetelmän rinnakkaisilla säännöillä.
+Näiden laatiminen oli yhtä helppoa kuin perinteistenkin ja tietokone pystyi toteuttamaan laajojakin säännöstöjä kevyesti.
+Näin syntyi ns. morfologinen kaksitasomalli, josta parin seuraavan kuukauden jälkeen oli valmiina teoria, alustava kuvaus suomen sanojen taipumisesta sen mukaan, sekä tietokoneohjelma, joka toteutti sanojen tunnistamisen käytännössä.
+Ohjelma oli kielestä riippumaton ja pian eri lingvistit tekivät yli tusinalle eri kielelle omia kaksitasokuvauksiaan.
+Keksityn menetelmän työstäminen väitöskirjaksi vei puolitoista vuotta.

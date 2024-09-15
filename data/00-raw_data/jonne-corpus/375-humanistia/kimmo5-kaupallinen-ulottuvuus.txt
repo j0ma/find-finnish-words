@@ -1,0 +1,11 @@
+Kaupallinen ulottuvuus
+Teimme 1980-luvun alkupuolella yliopiston tutkimushankkeiden puitteissa yhteistyötä kaupallisten yritysten kanssa.
+Tätä kautta saatiin merkittävästi lisärahoitusta tutkimukselle.
+Keskushallinto ei siinä vaiheessa pitänyt mahdollisena, että yliopisto itsessään olisi harrastanut mitään kaupallista toimintaa.
+Tämän vuoksi perustimme yhdessä Fred Karlssonin kanssa vuonna 1986 erillisen Lingsoft-nimisen firman.
+Yhtiön puitteissa saatoimme palkata opiskelijoita kehittämään kaupalliset vaatimukset täyttäviä tuotteita kuten tavutusalgoritmeja ja oikeinkirjoituksen tarkistimia suomen kielelle ja pian monille muillekin kielille.
+Firma on tarjonnut usean sadan henkilötyövuoden verran työtä kielitieteilijöille ja kieliteknologeille.
+Kaupallisen kieliteknologian alkuvaiheista Suomessa on kirjoittanut muun muassa Antti Arppe artikkelissaan Ei yhtä ainoaa polkua – Suomalaisia kokemuksia matkalla kieliteknologisesta tutkimuksesta liiketoimintaan.
+Tarja Knuuttila puolestaan kuvailee Tieteestä tuotteeksi -teoksessa ristiriitoja, joita saattoi syntyä ja syntyikin, kun useammilla tutkijoilla oli omia kaupallisesti kehitettävissä olevia tutkimustuloksia.
+Lingsoft toimii edelleen, joskin me perustajajäsenet päätimme olla ensi sijassa tutkijoita ja toimimme yhtiössä ainoastaan vähemmistöosakkaina pienellä osuudella.
+Kokemani perusteella olen tullut vakuuttuneeksi siitä, että akateemisen tutkimuksen tulisi olla avointa ja siellä kehitettyjen tietokoneohjelmien avoimen lähdekoodin mukaisia.
