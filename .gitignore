@@ -165,4 +165,5 @@ raw_data/
 unimorph/
 
 **/obsolete/
-data/fin_mc4_500k*
+data/fin-mc4*
+staging/
